@@ -6,8 +6,7 @@ const adapter = {
       let fun = req.url.replace('/altiorem.api/', '')
       fun = fun.split('?')[0]
         if (fun.includes('course')) {
-            fun = fun.replace('course_', '')
-            response = await courseController[fun](req)
+            response = await courseController[fun](req.body)
             res.status(response.statusCode).json(response.body)
         } else {
             response = await userController[fun](req.body)

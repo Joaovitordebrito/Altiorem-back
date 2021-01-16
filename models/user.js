@@ -33,8 +33,7 @@ const UserSchema = new mongoose.Schema({
   blocked: {
     type: Boolean,
     default: false
-  },
-  
+  }
 })
 UserSchema.pre('save', async function hashPassword(next) {
   if (!this.isModified('password')) {
