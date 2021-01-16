@@ -29,7 +29,7 @@ class AppController {
     }
     
     dbConnect() {
-        const database = `mongodb+srv://dev:sc4l3@devcluster-dxopc.gcp.mongodb.net/scale`
+        const database = `mongodb+srv://dev:Altiorem123@cluster0.rp7wo.mongodb.net/ALTIOREM?retryWrites=true&w=majority`
 
         mongoose.connect(database, {
             useNewUrlParser:true,
