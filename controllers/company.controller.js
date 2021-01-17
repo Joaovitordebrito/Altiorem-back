@@ -1,4 +1,4 @@
-const { insert, fetch, fetchAll, del, update } = require('../adapters/mongoose.adapter')
+const { insert, fetch, fetchAll, fetchMany, del, update } = require('../adapters/mongoose.adapter')
 
 const courseController = {
     async company_register(body) {
@@ -122,6 +122,61 @@ const courseController = {
               }
         }
        return response  
+    },
+    async company_login(body) {
+      let response
+      const user = await fetch('company',{ cnpj: body.cnpj })
+      if (user){
+        if (!await user.compareHash(body.password)) {
+         return response = {
+            statusCode: 400,
+            body: {
+              status: 'error',
+              desc: 'cnpj or password are wrong'
+            }
+          }
+        }
+        const token = await user.generateToken()
+
+        if (token) {
+          console.log(token)
+          response = {
+            statusCode: 200,
+            body: { token, id: user.id, cnpj: user.cnpj}
+          }
+        }
+      } else {
+        response = {
+          statusCode: 400,
+          body: {
+            status: 'error',
+            desc: 'cnpj or password are wrong'
+          }
+        }
+      }
+      return response
+    },
+    async list_company_jobs(body) {
+      let response
+        const companies = await fetchMany('company', {cnpj: body.cnpj})
+        if(companies) {
+            response = {
+                statusCode: 200,
+                body: {
+                  status: 'success',
+                  desc: companies.map(elem => elem.jobs)
+                }
+              }
+        } else {
+            response = {
+                statusCode: 400,
+                body: {
+                  status: 'error',
+                  desc: 'error fetching courses'
+                }
+              }
+        }
+        return response
     }
     
 }
