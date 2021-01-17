@@ -1,6 +1,7 @@
 const userController = require('../controllers/user.controller.js')
 const courseController = require('../controllers/course.controller')
 const companyController = require('../controllers/company.controller')
+const chatBotController = require('../controllers/chatbot.controller')
 
 const adapter = {
     async generic (req,res) {
@@ -9,10 +10,13 @@ const adapter = {
         if (fun.includes('course')) {
           response = await courseController[fun](req.body)
           res.status(response.statusCode).json(response.body)
-        } else if(fun.includes('company')) {
+        } else if (fun.includes('company')) {
           response = await companyController[fun](req.body)
           res.status(response.statusCode).json(response.body)
-        }else {
+        } else if (fun.includes('dialog')) {
+          response = await chatBotController[fun](req.body)
+          res.status(response.statusCode).json(response.body)
+        } else {
           response = await userController[fun](req.body)
           res.status(response.statusCode).json(response.body)
         }
