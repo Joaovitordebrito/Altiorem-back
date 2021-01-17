@@ -53,12 +53,7 @@ UserSchema.methods = {
 
   generateToken() {
     let obj = { id: this.id, email: this.email, refresh: rand_token.uid(20) }
-    if (this.admin) {
-      obj.admin = true
-    }
-    if (this.blocked == true) {
-      obj.blocked = true
-    }
+
     return jwt.sign(obj, process.env.SECRET_SESSION_TOKEN, {
       expiresIn: this.developer ? '2 days' : '4h'
     })

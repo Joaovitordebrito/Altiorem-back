@@ -122,6 +122,39 @@ const courseController = {
               }
         }
        return response  
+    },
+    async company_login(body) {
+      let response
+      const user = await fetch('company',{ cnpj: body.cnpj })
+      if (user){
+        if (!await user.compareHash(body.password)) {
+         return response = {
+            statusCode: 400,
+            body: {
+              status: 'error',
+              desc: 'cnpj or password are wrong'
+            }
+          }
+        }
+        const token = await user.generateToken()
+
+        if (token) {
+          console.log(token)
+          response = {
+            statusCode: 200,
+            body: { token, id: user.id, cnpj: user.cnpj}
+          }
+        }
+      } else {
+        response = {
+          statusCode: 400,
+          body: {
+            status: 'error',
+            desc: 'cnpj or password are wrong'
+          }
+        }
+      }
+      return response
     }
     
 }

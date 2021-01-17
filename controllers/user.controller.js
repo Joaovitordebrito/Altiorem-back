@@ -1,5 +1,4 @@
 const { insert, fetch } = require('../adapters/mongoose.adapter')
-const userModel = require('../models/user')
 
 const userController = {
     async register(body) {
