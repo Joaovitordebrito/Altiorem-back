@@ -1,20 +1,20 @@
 const mongoose = require("mongoose")
 const CourseSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true,
     min: 3
   },
-  area: {
+  image: {
     type: String,
     required: true,
     min: 3
   },
-  content: {
+  source: {
     type: String,
     required: true
   },
-  duration: {
+  workload: {
     type: String
   },
   description: {
@@ -24,6 +24,9 @@ const CourseSchema = new mongoose.Schema({
   teacher: {
     type: String,
     min: 3
+  },
+  modules:{
+    type: Array
   },
   createdAt: {
     type: Date,

@@ -11,4 +11,11 @@ routes.post('/altiorem.api/list_course', adapter.generic)
 routes.post('/altiorem.api/delete_course', adapter.generic)
 routes.post('/altiorem.api/update_course', adapter.generic)
 
+
+//company routes
+routes.post('/altiorem.api/company_register', adapter.generic)
+routes.post('/altiorem.api/list_company', adapter.generic)
+routes.post('/altiorem.api/delete_company', adapter.generic)
+routes.post('/altiorem.api/list_company_courses', adapter.generic)
+
 module.exports = routes

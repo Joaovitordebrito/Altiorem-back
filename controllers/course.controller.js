@@ -1,28 +1,41 @@
-const { insert, fetch, fetchAll, del, update } = require('../adapters/mongoose.adapter')
+const { insert, fetch, fetchAll, fetchMany, del, update } = require('../adapters/mongoose.adapter')
+const { list_company } = require('./company.controller')
 
 const courseController = {
     async course_register(body) {
         let response
-        if(!await fetch('course', {name: body.name})) {
-            const query = insert('course', body)
-            if(query){
-                response = {
-                    statusCode: 200,
-                    body: {
-                      status: 'success',
-                      desc: 'Registered successfully'
-                    }
-                  }
-            } else {
+        if(await fetch('course', {name: body.name})) {
+            const source = await fetch('company', {cnpj: body.source})
+            if(source){
+                body.source = source.name
+                const query = insert('course', body)
+                if(query){
+                    response = {
+                        statusCode: 200,
+                        body: {
+                          status: 'success',
+                          desc: 'Registered successfully'
+                        }
+                      }
+                } else {
+                    response = {
+                        statusCode: 400,
+                        body: {
+                          status: 'error',
+                          desc: 'Register failed'
+                        }
+                      }
+                }
+            }else {
                 response = {
                     statusCode: 400,
                     body: {
                       status: 'error',
-                      desc: 'Register failed'
+                      desc: 'company not found'
                     }
                   }
             }
-        }else {
+        } else {
             response = {
                 statusCode: 400,
                 body: {
@@ -57,7 +70,7 @@ const courseController = {
     },
     async delete_course(body) {
         let response
-        const course = await fetch('course', { name: body.name })
+        const course = await fetchMany('course', { name: body.name })
         if (course) {
             let query = await del('course', course._id)
             if(query) {
@@ -121,6 +134,28 @@ const courseController = {
               }
         }
        return response  
+    },
+    async list_company_courses(body) {
+        let response
+        const courses = await fetchMany('course', {source: body.source})
+        if(courses) {
+            response = {
+                statusCode: 200,
+                body: {
+                  status: 'success',
+                  desc: courses
+                }
+              }
+        } else {
+            response = {
+                statusCode: 400,
+                body: {
+                  status: 'error',
+                  desc: 'error fetching courses'
+                }
+              }
+        }
+        return response
     }
     
 }
