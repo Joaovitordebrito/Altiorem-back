@@ -3,6 +3,7 @@ const adapter = require('../adapters/express.adapter')
 const routes = express.Router()
 //user routes
 routes.post('/altiorem.api/register', adapter.generic)
+routes.post('/altiorem.api/login', adapter.generic)
 
 
 //course routes

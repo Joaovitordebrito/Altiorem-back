@@ -4,7 +4,8 @@ const { list_company } = require('./company.controller')
 const courseController = {
     async course_register(body) {
         let response
-        if(await fetch('course', {name: body.name})) {
+        const user = await fetch('course', {title: body.title})
+        if(!user) {
             const source = await fetch('company', {cnpj: body.source})
             if(source){
                 body.source = source.name
@@ -70,7 +71,7 @@ const courseController = {
     },
     async delete_course(body) {
         let response
-        const course = await fetchMany('course', { name: body.name })
+        const course = await fetchMany('course', { title: body.title })
         if (course) {
             let query = await del('course', course._id)
             if(query) {
@@ -104,9 +105,9 @@ const courseController = {
     },
     async update_course(body){
         let response
-        const user = await fetch('course', {name: body.name})
+        const user = await fetch('course', {title: body.title})
         if (user) {
-                let query = update('course', body.fields, {name: user.name})
+                let query = update('course', body.fields, {title: user.title})
                 if (query){
                     response = {
                         statusCode: 200,
